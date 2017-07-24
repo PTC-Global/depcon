@@ -14,17 +14,17 @@ import (
 )
 
 const (
-	FlagVerbose     = "verbose"
-	EnvDepconMode   = "DEPCON_MODE"
-	ModeMarathon    = "marathon"
-	EnvMarathonHost = "MARATHON_HOST"
-	EnvMarathonUser = "MARATHON_USER"
-	EnvMarathonPass = "MARATHON_PASS"
+	FlagVerbose      = "verbose"
+	EnvDepconMode    = "DEPCON_MODE"
+	ModeMarathon     = "marathon"
+	EnvMarathonHost  = "MARATHON_HOST"
+	EnvMarathonUser  = "MARATHON_USER"
+	EnvMarathonPass  = "MARATHON_PASS"
 	EnvMarathonToken = "MARATHON_TOKEN"
-	FlagEnv         = "env"
-	ViperEnv        = "env_name"
-	EnvHelp         = `Specifies the Environment name to use (eg. test | prod | etc). This can be omitted if only a single environment has been defined`
-	DepConHelp      = `
+	FlagEnv          = "env"
+	ViperEnv         = "env_name"
+	EnvHelp          = `Specifies the Environment name to use (eg. test | prod | etc). This can be omitted if only a single environment has been defined`
+	DepConHelp       = `
 DEPCON (Deploy Containers)
 
 == Version: %s - Built: %s ==
@@ -87,7 +87,7 @@ func Execute() {
 				rootCmd.Execute()
 				return
 			}
-			logger.Logger().Error("%s file not found.  Generating initial configuration", file.Filename())
+			logger.Logger().Errorf("%s file not found.  Generating initial configuration", file.Filename())
 			configFile = cliconfig.CreateNewConfigFromUserInput()
 		}
 	}
@@ -123,7 +123,7 @@ func executeWithExistingConfig() {
 		os.Exit(1)
 	}
 	if _, err := configFile.GetEnvironment(envName); err != nil {
-		logger.Logger().Error("'%s' environment could not be found in config (%s)\n\n", envName, configFile.Filename())
+		logger.Logger().Errorf("'%s' environment could not be found in config (%s)\n\n", envName, configFile.Filename())
 		printValidEnvironments()
 		os.Exit(1)
 	} else {

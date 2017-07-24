@@ -25,7 +25,7 @@ func CreateMemoryMarathonConfig(host, user, password, token string) *ConfigFile 
 		HostUrl:  host,
 		Username: user,
 		Password: password,
-		Token: token,
+		Token:    token,
 	}
 	configEnv := &ConfigEnvironment{
 		Marathon: serviceEnv,
@@ -57,7 +57,7 @@ func getDefaultFormatOption() string {
 	fmt.Println("Default output format (can be overridden via runtime flag)")
 	fmt.Println("1 - column")
 	fmt.Println("2 - json")
-	fmt.Println("3 - yaml\n")
+	fmt.Println("3 - yaml")
 	fmt.Printf("Option: ")
 
 	fmt.Scanf("%s", &response)
@@ -100,6 +100,6 @@ func getBoolAnswer(question string, defaultTrue bool) bool {
 		return false
 	}
 
-	fmt.Printf("\nERROR: Must response with 'y' or 'no'\n", response)
+	fmt.Printf("\nERROR: Must respond with 'y' or 'no'\n")
 	return getBoolAnswer(question, defaultTrue)
 }

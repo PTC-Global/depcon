@@ -41,7 +41,7 @@ func (c *BGClient) checkIfTasksDrained(app, existingApp *marathon.Application, s
 
 	hosts, err := proxiesFromURI(c.opts.LoadBalancer)
 	if err != nil {
-		log.Error("Error with HAProxy Stats URL: %s", err.Error())
+		log.Errorf("Error with HAProxy Stats URL: %s", err.Error())
 	}
 
 	var errCaught error = nil
@@ -61,7 +61,7 @@ func (c *BGClient) checkIfTasksDrained(app, existingApp *marathon.Application, s
 			errCaught = resp.Error
 		} else {
 			pids := strings.Split(resp.Content, " ")
-			log.Debug("Pids: %v, length: %d, time constraint: %v", pids, len(pids), (time.Now().Sub(stepStartedAt) < c.opts.StepDelay))
+			log.Debug("Pids: %v, length: %d, time constraint: %v", pids, len(pids), time.Now().Sub(stepStartedAt) < c.opts.StepDelay)
 			if len(pids) > 1 && time.Now().Sub(stepStartedAt) < c.opts.StepDelay {
 				log.Info("Waiting for %d, pids on %s", len(pids), h)
 				return c.checkIfTasksDrained(app, existingApp, stepStartedAt)
@@ -132,7 +132,7 @@ func (c *BGClient) checkIfTasksDrained(app, existingApp *marathon.Application, s
 	//Scale old app down
 	log.Info("Scaling old app down to %d instances", len(tasksToKill))
 	if err := c.marathon.KillTasksAndScale(tasksToKill...); err != nil {
-		log.Error("Failure killing tasks: %v", tasksToKill)
+		log.Errorf("Failure killing tasks: %v", tasksToKill)
 	}
 	return c.checkIfTasksDrained(app, existingApp, time.Now())
 
@@ -241,7 +241,7 @@ func (c *BGClient) refreshAppOrPanic(id string) *marathon.Application {
 	// Retry in case of minor network errors
 	for i := 0; i < 3; i++ {
 		if a, err := c.marathon.GetApplication(id); err != nil {
-			log.Error("Error refresh app info: %s, Will retry %d more times before giving up", err.Error(), 3-(i+1))
+			log.Errorf("Error refresh app info: %s, Will retry %d more times before giving up", err.Error(), 3-(i+1))
 			time.Sleep(time.Duration(3) * time.Second)
 		} else {
 			log.Debug("refreshAppOrPanic: returning %s", sprintApp(a))

@@ -25,7 +25,7 @@ func (c *MarathonClient) WaitForApplication(id string, timeout time.Duration) er
 				if app.HealthChecks != nil && len(app.HealthChecks) > 0 {
 					err := c.WaitForApplicationHealthy(id, timeout)
 					if err != nil {
-						logWait.Error("Error waiting for application '%s' to become healthy: %s", id, err.Error())
+						logWait.Errorf("Error waiting for application '%s' to become healthy: %s", id, err.Error())
 					}
 				} else {
 					logWait.Warning("No health checks defined for '%s', skipping waiting for healthy state", id)

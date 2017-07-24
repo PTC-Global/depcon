@@ -123,7 +123,7 @@ func (c *BGClient) startDeployment(app *marathon.Application, state *appState) b
 	if !state.resuming {
 		a, err := c.marathon.CreateApplication(app, true, false)
 		if err != nil {
-			log.Error("Unable to create application: %s", err.Error())
+			log.Errorf("Unable to create application: %s", err.Error())
 			os.Exit(1)
 		}
 		app = a
